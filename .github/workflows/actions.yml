@@ -36,8 +36,8 @@ jobs:
           git config user.name "${{ github.event.pull_request.user.login }}"
           git fetch origin
           git checkout sample_branch_1
-          git merge origin/sample_branch_3 --no-commit --no-ff
-          git commit -m "Merge changes from sample_branch_3 into sample_branch_1"
+          git merge origin/sample_branch_2 --no-commit --no-ff
+          git commit -m "Merge changes from sample_branch_2 into sample_branch_1"
           git push origin sample_branch_1
           
   # pull-and-push:
