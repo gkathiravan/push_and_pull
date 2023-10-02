@@ -34,13 +34,12 @@ jobs:
       - name: Checkout target branch
         run: |
           git fetch origin
-          git checkout -b sample_branch_1 origin/sample_branch_1
+          git checkout sample_branch_1
         
 
       - name: Merge changes
         run: | 
           git pull origin sample_branch_2
-          git config pull.rebase false
          
       - name: Push changes to target branch
         run: |
