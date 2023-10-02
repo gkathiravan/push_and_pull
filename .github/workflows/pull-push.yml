@@ -1,0 +1,28 @@
+name: Pull and Push
+
+on:
+  push:
+    branches:
+      - sample_branch_2  # Trigger this workflow when changes are pushed to source-branch
+
+jobs:
+  pull-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v2
+        with:
+          ref: sample_branch_2
+
+      - name: Checkout target branch
+        run: git checkout -b sample_branch_1 origin/sample_branch_1
+
+      - name: Merge changes
+        run: git merge sample_branch_2
+
+      - name: Push changes to target branch
+        run: |
+          git config --global user.name "Your Name"
+          git config --global user.email "your.email@example.com"
+          git push origin sample_branch_1
