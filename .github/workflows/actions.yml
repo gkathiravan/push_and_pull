@@ -38,7 +38,9 @@ jobs:
           git config pull.rebase false  # Merge divergent branches
 
       - name: Checkout target branch
-        run: git checkout sample_branch_1
+        run: |
+          git fetch origin
+          git checkout sample_branch_1
 
       - name: Merge changes
         run: git merge sample_branch_3
