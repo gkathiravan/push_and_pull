@@ -39,8 +39,8 @@ jobs:
 
       - name: Merge changes
         run: | 
-          git merge --no-ff sample_branch_2
-
+          git pull origin sample_branch_2
+         
       - name: Push changes to target branch
         run: |
           git config --global user.name "gkathiravan"
