@@ -25,14 +25,26 @@ jobs:
   pull-and-push:
     runs-on: ubuntu-latest
 
-    steps:    
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v2
+        with:
+          ref: sample_branch_3
+
+      - name: Checkout target branch
+        run: |
+          git fetch origin
+          git checkout sample_branch_1 origin/sample_branch_1
+        
+
+      - name: Merge changes
+        run: | 
+          git pull origin sample_branch_3
+          git add .
+          git commit -m "pulled the changes from branch 3"
+         
       - name: Push changes to target branch
         run: |
           git config --global user.name "gkathiravan"
           git config --global user.email "gkathiravan@triconinfotech.com"
-          git fetch origin
-          git checkout sample_branch_1
-          git pull origin sample_branch_3
-          git add .
-          git commit -m "pulled from sample_branch_3"
           git push origin sample_branch_1
