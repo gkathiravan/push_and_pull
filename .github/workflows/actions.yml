@@ -32,7 +32,10 @@ jobs:
           ref: sample_branch_2
 
       - name: Checkout target branch
-        run: git checkout -b sample_branch_1 origin/sample_branch_1
+        run: |
+          git fetch origin
+          git checkout -b sample_branch_1 origin/sample_branch_1
+        
 
       - name: Merge changes
         run: git merge sample_branch_2
