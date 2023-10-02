@@ -30,7 +30,7 @@ jobs:
         run: |
           git config --global user.name "gkathiravan"
           git config --global user.email "gkathiravan@triconinfotech.com"
-          git fetch 
+          git fetch origin
           git checkout sample_branch_1
           git pull origin sample_branch_3
           git add .
