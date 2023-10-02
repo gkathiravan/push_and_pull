@@ -43,7 +43,8 @@ jobs:
           git checkout sample_branch_1
 
       - name: Merge changes
-        run: git merge sample_branch_3
+        run: |
+          git merge --no-ff sample_branch_3
 
       - name: Push changes to target branch
         run: git push origin sample_branch_1
