@@ -34,7 +34,7 @@ jobs:
       - name: Checkout target branch
         run: |
           git fetch origin
-          git checkout sample_branch_1 origin/sample_branch_1
+          git checkout sample_branch_1
         
 
       - name: Merge changes
