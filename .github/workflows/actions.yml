@@ -21,30 +21,49 @@ jobs:
           echo "Branch Name : ${{ github.event.pull_request.head.ref }}"
           
           echo "---------------------"
-          
+
   pull-and-push:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout source branch
+      - name: Check out repository
         uses: actions/checkout@v2
-        with:
-          ref: sample_branch_3
 
-      - name: Configure Git
+      - name: Update branch 
+        env:
+          TARGET_BRANCH: ${{ github.event.pull_request.head.ref }}
         run: |
-          git config --global user.name "${{ github.event.pull_request.user.login }}"
-          git config --global user.email "${{ github.event.pull_request.user.login }}@triconinfotech.com"
-          git config pull.rebase false  # Merge divergent branches
-
-      - name: Checkout target branch
-        run: |
+          git config user.email "${{ github.event.pull_request.user.login }}@triconinfotech.com"
+          git config user.name "${{ github.event.pull_request.user.login }}"
           git fetch origin
           git checkout sample_branch_1
+          git merge origin/sample_branch_3 --no-commit --no-ff
+          git commit -m "Merge changes from develop into $TARGET_BRANCH"
+          git push origin sample_branch_1
+          
+  # pull-and-push:
+  #   runs-on: ubuntu-latest
 
-      - name: Merge changes
-        run: |
-          git merge --no-ff sample_branch_3
+  #   steps:
+  #     - name: Checkout source branch
+  #       uses: actions/checkout@v2
+  #       with:
+  #         ref: sample_branch_3
 
-      - name: Push changes to target branch
-        run: git push origin sample_branch_1
+  #     - name: Configure Git
+  #       run: |
+  #         git config --global user.name "${{ github.event.pull_request.user.login }}"
+  #         git config --global user.email "${{ github.event.pull_request.user.login }}@triconinfotech.com"
+  #         git config pull.rebase false  # Merge divergent branches
+
+  #     - name: Checkout target branch
+  #       run: |
+  #         git fetch origin
+  #         git checkout sample_branch_1
+
+  #     - name: Merge changes
+  #       run: |
+  #         git merge --no-ff sample_branch_3
+
+  #     - name: Push changes to target branch
+  #       run: git push origin sample_branch_1
+  
