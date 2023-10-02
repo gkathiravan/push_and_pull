@@ -19,4 +19,26 @@ jobs:
           echo "Author: ${{ github.event.pull_request.user.login }}"
           echo "URL: ${{ github.event.pull_request.html_url }}"
           echo "Branch Name : ${{ github.event.pull_request.head.ref }}"
+          
           echo "---------------------"
+          
+  pull-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source branch
+        uses: actions/checkout@v2
+        with:
+          ref: sample_branch_2
+
+      - name: Checkout target branch
+        run: git checkout -b sample_branch_1 origin/sample_branch_1
+
+      - name: Merge changes
+        run: git merge sample_branch_2
+
+      - name: Push changes to target branch
+        run: |
+          git config --global user.name "gkathiravan"
+          git config --global user.email "gkathiravan@triconinfotech.com"
+          git push origin sample_branch_1
