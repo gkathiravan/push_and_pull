@@ -38,7 +38,8 @@ jobs:
         
 
       - name: Merge changes
-        run: git merge sample_branch_2
+        run: | 
+          git merge --no-ff sample_branch_2
 
       - name: Push changes to target branch
         run: |
