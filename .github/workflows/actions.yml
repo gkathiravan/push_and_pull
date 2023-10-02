@@ -37,7 +37,7 @@ jobs:
           git fetch origin
           git checkout sample_branch_1
           git merge sample_branch_3 --no-commit --no-ff
-          git commit -m "Merge changes from develop into $TARGET_BRANCH"
+          git commit -m "Merge changes from sample_branch_3 into sample_branch_1"
           git push origin sample_branch_1
           
   # pull-and-push:
