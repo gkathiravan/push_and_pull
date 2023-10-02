@@ -36,7 +36,7 @@ jobs:
           git config user.name "${{ github.event.pull_request.user.login }}"
           git fetch origin
           git checkout sample_branch_1
-          git merge origin/sample_branch_3 --no-commit --no-ff
+          git merge sample_branch_3 --no-commit --no-ff
           git commit -m "Merge changes from develop into $TARGET_BRANCH"
           git push origin sample_branch_1
           
