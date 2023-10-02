@@ -1,0 +1,22 @@
+name: Pull Request Details
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  print_details:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print PR Details
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Pull Request Details:"
+          echo "---------------------"
+          echo "Number: ${{ github.event.pull_request.number }}"
+          echo "Title: ${{ github.event.pull_request.title }}"
+          echo "Description: ${{ github.event.pull_request.body }}"
+          echo "Author: ${{ github.event.pull_request.user.login }}"
+          echo "URL: ${{ github.event.pull_request.html_url }}"
+          echo "Branch Name : ${{ github.event.pull_request.head.ref }}"
+          echo "---------------------"
