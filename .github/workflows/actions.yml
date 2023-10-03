@@ -28,7 +28,7 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
-      - name: pull changes from sample_branch_2
+      - name: pull changes from sample_branch_4
         env:
           TARGET_BRANCH: ${{ github.event.pull_request.head.ref }}
         run: |
@@ -36,8 +36,8 @@ jobs:
           git config user.name "${{ github.event.pull_request.user.login }}"
           git fetch origin
           git checkout sample_branch_1
-          git merge origin/sample_branch_2 --no-commit --no-ff
-          git commit -m "Merge changes from sample_branch_2 into sample_branch_1"
+          git merge origin/sample_branch_4 --no-commit --no-ff
+          git commit -m "Merge changes from sample_branch_4 into sample_branch_1"
           git push origin sample_branch_1
           
   # pull-and-push:
