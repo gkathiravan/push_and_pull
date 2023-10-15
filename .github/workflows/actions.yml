@@ -40,26 +40,52 @@ jobs:
   #         git commit -m "Merge changes from sample_branch_5 into sample_branch_1"
   #         git push origin sample_branch_1
           
-  delete-branch:
+  # delete-branch:
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #   - name: Check if the branch can be deleted
+  #     run: |
+  #       branch_name="${GITHUB_REF/refs\/heads\//}"
+  #       if [[ "$branch_name" == "sample_branch_1" ]]; then
+  #         echo "Main branch cannot be deleted."
+  #         exit 1
+  #       fi
+  #       echo "Branch can be deleted."
+  #     continue-on-error: true
+
+  #   - name: Delete Branch
+  #     run: |
+  #       branch_name="sample_branch_5"
+  #       git push origin --delete $branch_name
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+  close-pr-and-delete-branch:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check if the branch can be deleted
-      run: |
-        branch_name="${GITHUB_REF/refs\/heads\//}"
-        if [[ "$branch_name" == "sample_branch_1" ]]; then
-          echo "Main branch cannot be deleted."
-          exit 1
-        fi
-        echo "Branch can be deleted."
-      continue-on-error: true
+      - name: Check out code
+        uses: actions/checkout@v2
 
-    - name: Delete Branch
-      run: |
-        branch_name="sample_branch_5"
-        git push origin --delete $branch_name
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Close PR and Delete Branch
+        run: |
+          # # Extract the branch name from the ref
+          # branch_name="${{ github.ref }}" # e.g., refs/heads/main
+          # branch_name="${branch_name#refs/heads/}" # Get just the branch name
+          
+          # # Close the Pull Request associated with this branch
+          # pr_number=$(hub pr list -h $branch_name -s open --format=%I)
+          if [[ -n 6 ]]; then
+            hub pr close 6
+          fi
+          
+          # Delete the branch
+          git push origin --delete $sample_branch_5
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
           
   # pull-and-push:
