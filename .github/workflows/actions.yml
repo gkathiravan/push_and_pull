@@ -38,7 +38,7 @@ jobs:
           prs=$(curl -s "https://api.github.com/repos/${{ github.repository }}/pulls?state=open")
 
           # Find the pull request associated with the current branch
-          pr_number=$(echo "$prs" | jq -r ".[] | select(.head.ref == \"sample_branch_2\").number")
+          pr_number=$(echo "$prs" | jq -r ".[] | select(.head.ref == \"sample_branch_4\").number")
 
           if [ -n "$pr_number" ]; then
             # Close the pull request
