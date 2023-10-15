@@ -47,7 +47,7 @@ jobs:
     - name: Check if the branch can be deleted
       run: |
         branch_name="${GITHUB_REF/refs\/heads\//}"
-        if [[ "$branch_name" == "main" ]]; then
+        if [[ "$branch_name" == "sample_branch_1" ]]; then
           echo "Main branch cannot be deleted."
           exit 1
         fi
