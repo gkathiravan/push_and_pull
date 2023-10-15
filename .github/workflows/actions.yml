@@ -22,23 +22,45 @@ jobs:
           
           echo "---------------------"
 
-  pull-and-push:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
+  # pull-and-push:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Check out repository
+  #       uses: actions/checkout@v2
 
-      - name: pull changes from sample_branch_5
-        env:
-          TARGET_BRANCH: ${{ github.event.pull_request.head.ref }}
-        run: |
-          git config user.email "${{ github.event.pull_request.user.login }}@triconinfotech.com"
-          git config user.name "${{ github.event.pull_request.user.login }}"
-          git fetch origin
-          git checkout sample_branch_1
-          git merge origin/sample_branch_5 --no-commit --no-ff
-          git commit -m "Merge changes from sample_branch_5 into sample_branch_1"
-          git push origin sample_branch_1
+  #     - name: pull changes from sample_branch_5
+  #       env:
+  #         TARGET_BRANCH: ${{ github.event.pull_request.head.ref }}
+  #       run: |
+  #         git config user.email "${{ github.event.pull_request.user.login }}@triconinfotech.com"
+  #         git config user.name "${{ github.event.pull_request.user.login }}"
+  #         git fetch origin
+  #         git checkout sample_branch_1
+  #         git merge origin/sample_branch_5 --no-commit --no-ff
+  #         git commit -m "Merge changes from sample_branch_5 into sample_branch_1"
+  #         git push origin sample_branch_1
+          
+  delete-branch:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check if the branch can be deleted
+      run: |
+        branch_name="${GITHUB_REF/refs\/heads\//}"
+        if [[ "$branch_name" == "main" ]]; then
+          echo "Main branch cannot be deleted."
+          exit 1
+        fi
+        echo "Branch can be deleted."
+      continue-on-error: true
+
+    - name: Delete Branch
+      run: |
+        branch_name="sample_branch_5"
+        git push origin --delete $branch_name
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
           
   # pull-and-push:
   #   runs-on: ubuntu-latest
