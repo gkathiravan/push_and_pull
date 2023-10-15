@@ -19,8 +19,34 @@ jobs:
           echo "Author: ${{ github.event.pull_request.user.login }}"
           echo "URL: ${{ github.event.pull_request.html_url }}"
           echo "Branch Name : ${{ github.event.pull_request.head.ref }}"
-          
+
           echo "---------------------"
+  close-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Close Pull Request
+        run: |
+          # Extract the branch name from the ref
+          # branch_name="${{ github.ref }}" # e.g., refs/heads/main
+          # branch_name="${branch_name#refs/heads/}" # Get just the branch name
+          
+          # List open pull requests in the repository
+          prs=$(curl -s "https://api.github.com/repos/${{ github.repository }}/pulls?state=open")
+
+          # Find the pull request associated with the current branch
+          pr_number=$(echo "$prs" | jq -r ".[] | select(.head.ref == \"sample_branch_2\").number")
+
+          if [ -n "$pr_number" ]; then
+            # Close the pull request
+            curl -X PATCH -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -d '{"state":"closed"}' "https://api.github.com/repos/${{ github.repository }}/pulls/$pr_number"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
   # pull-and-push:
   #   runs-on: ubuntu-latest
@@ -61,30 +87,30 @@ jobs:
   #     env:
   #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   
-  close-pr-and-delete-branch:
-    runs-on: ubuntu-latest
+  # close-pr-and-delete-branch:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Check out code
+  #       uses: actions/checkout@v2
 
-      - name: Close PR and Delete Branch
-        run: |
-          # # Extract the branch name from the ref
-          # branch_name="${{ github.ref }}" # e.g., refs/heads/main
-          # branch_name="${branch_name#refs/heads/}" # Get just the branch name
+  #     - name: Close PR and Delete Branch
+  #       run: |
+  #         # # Extract the branch name from the ref
+  #         # branch_name="${{ github.ref }}" # e.g., refs/heads/main
+  #         # branch_name="${branch_name#refs/heads/}" # Get just the branch name
           
-          # # Close the Pull Request associated with this branch
-          # pr_number=$(hub pr list -h $branch_name -s open --format=%I)
-          if [[ -n 6 ]]; then
-            hub pr close 6
-          fi
+  #         # # Close the Pull Request associated with this branch
+  #         # pr_number=$(hub pr list -h $branch_name -s open --format=%I)
+  #         if [[ -n 6 ]]; then
+  #           hub pr close 6
+  #         fi
           
-          # Delete the branch
-          git push origin --delete $sample_branch_5
+  #         # Delete the branch
+  #         git push origin --delete $sample_branch_5
 
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
           
